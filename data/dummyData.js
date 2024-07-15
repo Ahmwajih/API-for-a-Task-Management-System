@@ -8,3 +8,5 @@ const tasks = [
     { id: 4, name: 'Task 4', description: 'Description 4' },
     { id: 5, name: 'Task 5', description: 'Description 5' },
     ];
+
+module.exports = { tasks };
