@@ -12,7 +12,7 @@ const getAllTasks = (req, res) => {
   });
 };
 
-const createTask = (req, res) => {
+const createTask = (req, res, next) => {
   let isUnique = true;
   while (isUnique) {
     const randomId = Math.floor(Math.random() * 10) + 1;
@@ -30,21 +30,36 @@ const createTask = (req, res) => {
   res.send("Create a task");
 };
 
-const getTask = (req, res) => {
+const getTask = (req, res, next) => {
   const { id } = req.params;
   const task = tasks.find((task) => task.id === parseInt(id));
   if (!task) {
     return res.status(404).send("Task not found");
-  }
+  } 
   res.send(task);
 };
 
-const updateTask = (req, res) => {
-  res.send("Update a task");
+const updateTask = (req, res, next) => {
+  const { id } = req.params;
+  const task = tasks.find((task) => task.id === parseInt(id));
+  if (!task) {
+    return res.status(404).send("Task not found");
+  } else {
+    task.name = req.body.name;
+    task.description = req.body.description;
+    res.json({ success: true, data: task });
+  }
 };
 
-const deleteTask = (req, res) => {
-  res.send("Delete a task");
+const deleteTask = (req, res, next) => {
+  const { id } = req.params;
+  const task = tasks.find((task) => task.id === parseInt(id));
+  if (!task) {
+    return res.status(404).send("Task not found");
+  } else {
+    const newTasks = tasks.filter((task) => task.id !== parseInt(id));
+    res.json({ success: true, data: newTasks });
+  }
 };
 
 module.exports = { getAllTasks, createTask, getTask, updateTask, deleteTask };
